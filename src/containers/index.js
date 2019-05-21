@@ -16,6 +16,7 @@ export { default as Extensions } from './Extensions';
 export { default as PipelineRun } from './PipelineRun';
 export { default as PipelineRuns } from './PipelineRuns';
 export { default as Pipelines } from './Pipelines';
+export { default as Secrets } from './Secrets';
 export { default as Tasks } from './Tasks';
 export {
   default as CustomResourceDefinition
