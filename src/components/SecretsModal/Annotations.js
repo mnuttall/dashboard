@@ -24,7 +24,7 @@ const Annotations = props => {
     handleAdd,
     handleRemove,
     invalidFields,
-    serviceAccount
+    disabled
   } = props;
 
   const annotationFields = [];
@@ -33,28 +33,30 @@ const Annotations = props => {
       <div className="annotationRow" key={i}>
         <TextInput
           id={`annotation${i}`}
+          data-testid={`annotation${i}`}
           labelText=""
-          key={i}
+          key={`annotation${i}`}
           value={annotations[i]}
           placeholder=""
           onChange={handleChange}
           invalid={invalidFields.indexOf(`annotation${i}`) > -1}
           autoComplete="off"
-          disabled={serviceAccount.trim() === ''}
+          disabled={disabled}
         />
         <div key={`colon${i}`} className="colon">
           :
         </div>
         <TextInput
           id={`annotation${i + 1}`}
+          data-testid={`annotation${i + 1}`}
           labelText=""
-          key={i + 1}
+          key={`annotation${i + 1}`}
           value={annotations[i + 1]}
           placeholder=""
           onChange={handleChange}
           invalid={invalidFields.indexOf(`annotation${i + 1}`) > -1}
           autoComplete="off"
-          disabled={serviceAccount.trim() === ''}
+          disabled={disabled}
         />
       </div>
     );
@@ -63,12 +65,10 @@ const Annotations = props => {
   return (
     <div className="annotations">
       <>
-        <div className="label">
-          <p>Server URL:</p>
-        </div>
-        <div className="signs">
-          <Remove style={{ fill: 'red' }} onClick={handleRemove} />
-          <Add onClick={handleAdd} />
+        <div className="labelAndButtons">
+          <p className="label">Server URL:</p>
+          <Remove className="removeIcon" onClick={handleRemove} />
+          <Add className="addIcon" onClick={handleAdd} />
         </div>
         {annotationFields}
         <br />

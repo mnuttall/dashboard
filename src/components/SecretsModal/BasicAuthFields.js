@@ -21,24 +21,26 @@ const BasicAuthFields = props => {
     password,
     handleChange,
     invalidFields,
-    accessTo,
+    disabled,
     serviceAccount
   } = props;
   return (
     <>
       <TextInput
         id="username"
+        data-testid="username"
         autoComplete="off"
         value={username}
         placeholder=""
         labelText="Username:"
         onChange={handleChange}
         invalid={invalidFields.indexOf('username') > -1}
-        disabled={accessTo === ''}
+        disabled={disabled}
       />
       <br />
       <TextInput
         id="password"
+        data-testid="password"
         autoComplete="off"
         type="password"
         value={password}
@@ -53,6 +55,7 @@ const BasicAuthFields = props => {
       <br />
       <TextInput
         id="serviceAccount"
+        data-testid="serviceAccount"
         autoComplete="off"
         type="serviceAccount"
         value={serviceAccount}

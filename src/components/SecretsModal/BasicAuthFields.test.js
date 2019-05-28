@@ -21,7 +21,7 @@ it('BasicAuthFields renders with blank inputs', () => {
     password: '',
     serviceAccount: '',
     handleChange: function() {},
-    accessTo: '',
+    disabled: false,
     invalidFields: []
   };
   const { getByLabelText, getAllByDisplayValue } = render(<BasicAuthFields {...props} />);
@@ -37,14 +37,14 @@ it('BasicAuthFields shows disabled fields', () => {
     password: '',
     serviceAccount: '',
     handleChange: function() {},
-    accessTo: 'git',
+    disabled: false,
     invalidFields: []
   };
-  const { getByDisplayValue } = render(<BasicAuthFields {...props} />);
+  const { getByDisplayValue, getByTestId } = render(<BasicAuthFields {...props} />);
 
-  const usernameInput = document.getElementById('username');
-  const passwordInput = document.getElementById('password');
-  const serviceAccountInput = document.getElementById('serviceAccount');
+  const usernameInput = getByTestId('username');
+  const passwordInput = getByTestId('password');
+  const serviceAccountInput = getByTestId('serviceAccount');
 
   expect(usernameInput.disabled).toBeFalsy();
   expect(passwordInput.disabled).toBeTruthy();
@@ -57,14 +57,14 @@ it('BasicAuthFields incorrect fields', () => {
     password: 'text',
     serviceAccount: '',
     handleChange: function() {},
-    accessTo: '',
+    disabled: false,
     invalidFields: ['username', 'password']
   };
-  const {} = render(<BasicAuthFields {...props} />);
+  const { getByTestId } = render(<BasicAuthFields {...props} />);
 
-  const usernameInput = document.getElementById('username');
-  const passwordInput = document.getElementById('password');
-  const serviceAccountInput = document.getElementById('serviceAccount');
+  const usernameInput = getByTestId('username');
+  const passwordInput = getByTestId('password');
+  const serviceAccountInput = getByTestId('serviceAccount');
 
   expect(usernameInput.getAttribute('data-invalid')).toBeTruthy();
   expect(passwordInput.getAttribute('data-invalid')).toBeTruthy();

@@ -17,7 +17,7 @@ import Annotations from './Annotations';
 
 it('Annotations shows blank fields', () => {
   const props = {
-    serviceAccount: '',
+    disabled: true,
     handleChange: function() {},
     invalidFields: [],
     annotations: [`tekton.dev/git-0`, '', `tekton.dev/git-1`, '', `tekton.dev/git-2`, ''],
@@ -33,7 +33,7 @@ it('Annotations shows blank fields', () => {
 
 it('Annotations shows disabled fields', () => {
   const props = {
-    serviceAccount: '',
+    disabled: true,
     handleChange: function() {},
     invalidFields: [],
     annotations: [`tekton.dev/git-0`, '', `tekton.dev/git-1`, '',],
@@ -50,19 +50,19 @@ it('Annotations shows disabled fields', () => {
 
 it('Annotations incorrect fields', () => {
   const props = {
-    serviceAccount: '',
+    disabled: false,
     handleChange: function() {},
     invalidFields: ['annotation1', 'annotation5'],
     annotations: [`tekton.dev/git-0`, '', `tekton.dev/git-1`, 'something', `tekton.dev/git-2`, ''],
     handleAdd: function() {},
     handleRemove: function() {}
   };
-  const {} = render(<Annotations {...props} />);
+  const { getByTestId } = render(<Annotations {...props} />);
 
-  const annotation1Input = document.getElementById('annotation1');
-  const annotation2Input = document.getElementById('annotation2');
-  const annotation3Input = document.getElementById('annotation3');
-  const annotation5Input = document.getElementById('annotation5');
+  const annotation1Input = getByTestId('annotation1');
+  const annotation2Input = getByTestId('annotation2');
+  const annotation3Input = getByTestId('annotation3');
+  const annotation5Input = getByTestId('annotation5');
 
   expect(annotation1Input.getAttribute('data-invalid')).toBeTruthy();
   expect(annotation2Input.getAttribute('data-invalid')).toBeFalsy();
