@@ -18,6 +18,7 @@ import namespaces, * as namespaceSelectors from './namespaces';
 import serviceAccounts, * as serviceAccountSelectors from './serviceAccounts';
 import pipelines, * as pipelineSelectors from './pipelines';
 import pipelineRuns, * as pipelineRunsSelectors from './pipelineRuns';
+import secrets, * as secretSelectors from './secrets';
 import tasks, * as taskSelectors from './tasks';
 import taskRuns, * as taskRunsSelectors from './taskRuns';
 
@@ -26,6 +27,7 @@ export default combineReducers({
   namespaces,
   pipelines,
   pipelineRuns,
+  secrets,
   tasks,
   taskRuns,
   serviceAccounts
@@ -174,4 +176,17 @@ export function getTasksErrorMessage(state) {
 
 export function isFetchingTasks(state) {
   return taskSelectors.isFetchingTasks(state.tasks);
+}
+
+export function getSecrets(state) {
+  const namespace = getSelectedNamespace(state);
+  return secretSelectors.getSecrets(state.secrets, namespace);
+}
+
+export function getSecretsErrorMessage(state) {
+  return secretSelectors.getSecretsErrorMessage(state.secrets);
+}
+
+export function isFetchingSecrets(state) {
+  return secretSelectors.isFetchingSecrets(state.secrets);
 }
