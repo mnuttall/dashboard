@@ -15,14 +15,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import {
-  getServiceAccounts,
-  isFetchingServiceAccounts,
+  getPipelines,
+  isFetchingPipelines,
   getSelectedNamespace
 } from '../../reducers';
-import { fetchServiceAccounts } from '../../actions/serviceAccounts';
+import { fetchPipelines } from '../../actions/pipelines';
 import TooltipDropdown from '../../components/TooltipDropdown';
 
-class ServiceAccountsDropdown extends React.Component {
+class PipelinesDropdown extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -34,13 +34,13 @@ class ServiceAccountsDropdown extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchServiceAccounts();
+    this.props.fetchPipelines();
   }
 
   componentDidUpdate(prevProps) {
     const { namespace } = this.props;
     if (namespace !== prevProps.namespace) {
-      this.props.fetchServiceAccounts();
+      this.props.fetchPipelines();
       this.resetSelectedItem();
     }
   }
@@ -75,26 +75,26 @@ class ServiceAccountsDropdown extends React.Component {
   }
 }
 
-ServiceAccountsDropdown.defaultProps = {
+PipelinesDropdown.defaultProps = {
   items: [],
   loading: true,
-  label: 'Select ServiceAccount',
-  titleText: 'Service Account'
+  label: 'Select Pipeline',
+  titleText: 'Pipeline'
 };
 
 function mapStateToProps(state) {
   return {
-    items: getServiceAccounts(state).map(sa => sa.metadata.name),
-    loading: isFetchingServiceAccounts(state),
+    items: getPipelines(state).map(sa => sa.metadata.name),
+    loading: isFetchingPipelines(state),
     namespace: getSelectedNamespace(state)
   };
 }
 
 const mapDispatchToProps = {
-  fetchServiceAccounts
+  fetchPipelines
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(ServiceAccountsDropdown);
+)(PipelinesDropdown);

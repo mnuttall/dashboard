@@ -16,51 +16,43 @@ import { fireEvent, render } from 'react-testing-library';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-import ServiceAccountsDropdown from './ServiceAccountsDropdown';
+import PipelinesDropdown from './PipelinesDropdown';
 import * as API from '../../api';
 
 const props = {
-  id: 'service-accounts-dropdown'
+  id: 'pipelines-dropdown'
 };
 
-const serviceAccountsByNamespace = {
+const pipelinesByNamespace = {
   default: {
-    default: 'id-default',
-    'service-account-1': 'id-service-account-1',
-    'service-account-2': 'id-service-account-2'
+    'pipeline-1': 'id-pipeline-1',
+    'pipeline-2': 'id-pipeline-2'
   },
   green: {
-    'service-account-3': 'id-service-account-3'
+    'pipeline-3': 'id-pipeline-3'
   }
 };
 
-const serviceAccountsById = {
-  'id-default': {
+const pipelinesById = {
+  'id-pipeline-1': {
     metadata: {
-      name: 'default',
+      name: 'pipeline-1',
       namespace: 'default',
-      uid: 'id-default'
+      uid: 'id-pipeline-1'
     }
   },
-  'id-service-account-1': {
+  'id-pipeline-2': {
     metadata: {
-      name: 'service-account-1',
+      name: 'pipeline-2',
       namespace: 'default',
-      uid: 'id-service-account-1'
+      uid: 'id-pipeline-2'
     }
   },
-  'id-service-account-2': {
+  'id-pipeline-3': {
     metadata: {
-      name: 'service-account-2',
-      namespace: 'default',
-      uid: 'id-service-account-2'
-    }
-  },
-  'id-service-account-3': {
-    metadata: {
-      name: 'service-account-3',
+      name: 'pipeline-3',
       namespace: 'green',
-      uid: 'id-service-account-3'
+      uid: 'id-pipeline-3'
     }
   }
 };
@@ -71,22 +63,18 @@ const namespacesByName = {
   blue: ''
 };
 
-const initialTextRegExp = new RegExp('select serviceaccount', 'i');
+const initialTextRegExp = new RegExp('select pipeline', 'i');
 
 const middleware = [thunk];
 const mockStore = configureStore(middleware);
 
-beforeEach(() => {
-  jest
-    .spyOn(API, 'getServiceAccounts')
-    .mockImplementation(() => serviceAccountsById);
-});
+jest.spyOn(API, 'getPipelines').mockImplementation(() => pipelinesById);
 
-it('ServiceAccountsDropdown renders items based on Redux state', () => {
+it('PipelinesDropdown renders items based on Redux state', () => {
   const store = mockStore({
-    serviceAccounts: {
-      byId: serviceAccountsById,
-      byNamespace: serviceAccountsByNamespace,
+    pipelines: {
+      byId: pipelinesById,
+      byNamespace: pipelinesByNamespace,
       isFetching: false
     },
     namespaces: {
@@ -96,30 +84,30 @@ it('ServiceAccountsDropdown renders items based on Redux state', () => {
   });
   const { getByText, queryByText } = render(
     <Provider store={store}>
-      <ServiceAccountsDropdown {...props} />
+      <PipelinesDropdown {...props} />
     </Provider>
   );
   fireEvent.click(getByText(initialTextRegExp));
-  Object.keys(serviceAccountsByNamespace.default).forEach(item => {
+  Object.keys(pipelinesByNamespace.default).forEach(item => {
     const re = new RegExp(item, 'i');
     expect(queryByText(re)).toBeTruthy();
   });
-  fireEvent.click(getByText(/service-account-1/i));
-  Object.keys(serviceAccountsByNamespace.default).forEach(item => {
-    if (item !== 'service-account-1') {
+  fireEvent.click(getByText(/pipeline-1/i));
+  Object.keys(pipelinesByNamespace.default).forEach(item => {
+    if (item !== 'pipeline-1') {
       const re = new RegExp(item, 'i');
       expect(queryByText(re)).toBeFalsy();
     }
   });
-  expect(queryByText(/service-account-1/i)).toBeTruthy();
+  expect(queryByText(/pipeline-1/i)).toBeTruthy();
   expect(queryByText(initialTextRegExp)).toBeFalsy();
 });
 
-it('ServiceAccountsDropdown renders selected item', () => {
+it('PipelinesDropdown renders selected item', () => {
   const store = mockStore({
-    serviceAccounts: {
-      byId: serviceAccountsById,
-      byNamespace: serviceAccountsByNamespace,
+    pipelines: {
+      byId: pipelinesById,
+      byNamespace: pipelinesByNamespace,
       isFetching: false
     },
     namespaces: {
@@ -129,20 +117,17 @@ it('ServiceAccountsDropdown renders selected item', () => {
   });
   const { queryByText } = render(
     <Provider store={store}>
-      <ServiceAccountsDropdown
-        {...props}
-        selectedItem={{ text: 'service-account-1' }}
-      />
+      <PipelinesDropdown {...props} selectedItem={{ text: 'pipeline-1' }} />
     </Provider>
   );
-  expect(queryByText(/service-account-1/i)).toBeTruthy();
+  expect(queryByText(/pipeline-1/i)).toBeTruthy();
 });
 
-it('ServiceAccountsDropdown renders items based on Redux state when namespace changes', () => {
+it('PipelinesDropdown renders items based on Redux state when namespace changes', () => {
   const store = mockStore({
-    serviceAccounts: {
-      byId: serviceAccountsById,
-      byNamespace: serviceAccountsByNamespace,
+    pipelines: {
+      byId: pipelinesById,
+      byNamespace: pipelinesByNamespace,
       isFetching: false
     },
     namespaces: {
@@ -152,24 +137,24 @@ it('ServiceAccountsDropdown renders items based on Redux state when namespace ch
   });
   const { container, getByText, queryByText } = render(
     <Provider store={store}>
-      <ServiceAccountsDropdown {...props} />
+      <PipelinesDropdown {...props} />
     </Provider>
   );
   fireEvent.click(getByText(initialTextRegExp));
-  Object.keys(serviceAccountsByNamespace.default).forEach(item => {
+  Object.keys(pipelinesByNamespace.default).forEach(item => {
     const re = new RegExp(item, 'i');
     expect(queryByText(re)).toBeTruthy();
   });
-  fireEvent.click(getByText('service-account-1'));
-  expect(queryByText(/service-account-1/i)).toBeTruthy();
+  fireEvent.click(getByText('pipeline-1'));
+  expect(queryByText(/pipeline-1/i)).toBeTruthy();
   expect(queryByText(initialTextRegExp)).toBeFalsy();
 
-  // Change selected namespace to verify the ServiceAccounts Dropdown updates items accordingly
-  // selected item 'service-account-1' should be reset to ''
+  // Change selected namespace to verify the Pipelines Dropdown updates items accordingly
+  // selected item 'pipeline-1' should be reset to ''
   const newStore = mockStore({
-    serviceAccounts: {
-      byId: serviceAccountsById,
-      byNamespace: serviceAccountsByNamespace,
+    pipelines: {
+      byId: pipelinesById,
+      byNamespace: pipelinesByNamespace,
       isFetching: false
     },
     namespaces: {
@@ -179,29 +164,29 @@ it('ServiceAccountsDropdown renders items based on Redux state when namespace ch
   });
   render(
     <Provider store={newStore}>
-      <ServiceAccountsDropdown {...props} />
+      <PipelinesDropdown {...props} />
     </Provider>,
     { container }
   );
   fireEvent.click(getByText(initialTextRegExp));
-  Object.keys(serviceAccountsByNamespace.green).forEach(item => {
+  Object.keys(pipelinesByNamespace.green).forEach(item => {
     const re = new RegExp(item, 'i');
     expect(queryByText(re)).toBeTruthy();
   });
-  Object.keys(serviceAccountsByNamespace.default).forEach(item => {
+  Object.keys(pipelinesByNamespace.default).forEach(item => {
     const re = new RegExp(item, 'i');
     expect(queryByText(re)).toBeFalsy();
   });
-  fireEvent.click(getByText('service-account-3'));
-  expect(queryByText(/service-account-3/i)).toBeTruthy();
+  fireEvent.click(getByText('pipeline-3'));
+  expect(queryByText(/pipeline-3/i)).toBeTruthy();
   expect(queryByText(initialTextRegExp)).toBeFalsy();
 });
 
-it('ServiceAccountsDropdown renders loading skeleton based on Redux state', () => {
+it('PipelinesDropdown renders loading skeleton based on Redux state', () => {
   const store = mockStore({
-    serviceAccounts: {
-      byId: serviceAccountsById,
-      byNamespace: serviceAccountsByNamespace,
+    pipelines: {
+      byId: pipelinesById,
+      byNamespace: pipelinesByNamespace,
       isFetching: true
     },
     namespaces: {
@@ -211,17 +196,17 @@ it('ServiceAccountsDropdown renders loading skeleton based on Redux state', () =
   });
   const { queryByText } = render(
     <Provider store={store}>
-      <ServiceAccountsDropdown {...props} fetchServiceAccounts={() => {}} />
+      <PipelinesDropdown {...props} fetchPipelines={() => {}} />
     </Provider>
   );
   expect(queryByText(initialTextRegExp)).toBeFalsy();
 });
 
-it('ServiceAccountsDropdown handles onChange event', () => {
+it('PipelinesDropdown handles onChange event', () => {
   const store = mockStore({
-    serviceAccounts: {
-      byId: serviceAccountsById,
-      byNamespace: serviceAccountsByNamespace,
+    pipelines: {
+      byId: pipelinesById,
+      byNamespace: pipelinesByNamespace,
       isFetching: false
     },
     namespaces: {
@@ -232,19 +217,19 @@ it('ServiceAccountsDropdown handles onChange event', () => {
   const onChange = jest.fn();
   const { getByText } = render(
     <Provider store={store}>
-      <ServiceAccountsDropdown {...props} onChange={onChange} />
+      <PipelinesDropdown {...props} onChange={onChange} />
     </Provider>
   );
   fireEvent.click(getByText(initialTextRegExp));
-  fireEvent.click(getByText(/default/i));
+  fireEvent.click(getByText(/pipeline-1/i));
   expect(onChange).toHaveBeenCalledTimes(1);
 });
 
-it('ServiceAccountsDropdown handles onChange event when namespace changes', () => {
+it('PipelinesDropdown handles onChange event when namespace changes', () => {
   const storeDefaultNamespace = mockStore({
-    serviceAccounts: {
-      byId: serviceAccountsById,
-      byNamespace: serviceAccountsByNamespace,
+    pipelines: {
+      byId: pipelinesById,
+      byNamespace: pipelinesByNamespace,
       isFetching: false
     },
     namespaces: {
@@ -255,17 +240,17 @@ it('ServiceAccountsDropdown handles onChange event when namespace changes', () =
   const onChange = jest.fn();
   const { container, getByText } = render(
     <Provider store={storeDefaultNamespace}>
-      <ServiceAccountsDropdown {...props} onChange={onChange} />
+      <PipelinesDropdown {...props} onChange={onChange} />
     </Provider>
   );
   fireEvent.click(getByText(initialTextRegExp));
-  fireEvent.click(getByText(/default/i));
+  fireEvent.click(getByText(/pipeline-1/i));
 
   // Should call onChange because selected item was 'default' and now it will be reset to ''
   const storeGreenNamespace = mockStore({
-    serviceAccounts: {
-      byId: serviceAccountsById,
-      byNamespace: serviceAccountsByNamespace,
+    pipelines: {
+      byId: pipelinesById,
+      byNamespace: pipelinesByNamespace,
       isFetching: false
     },
     namespaces: {
@@ -275,16 +260,16 @@ it('ServiceAccountsDropdown handles onChange event when namespace changes', () =
   });
   render(
     <Provider store={storeGreenNamespace}>
-      <ServiceAccountsDropdown {...props} onChange={onChange} />
+      <PipelinesDropdown {...props} onChange={onChange} />
     </Provider>,
     { container }
   );
 
   // Should not call onChange because selected item was '' and now it will be reset to ''
   const storeBlueNamespace = mockStore({
-    serviceAccounts: {
-      byId: serviceAccountsById,
-      byNamespace: serviceAccountsByNamespace,
+    pipelines: {
+      byId: pipelinesById,
+      byNamespace: pipelinesByNamespace,
       isFetching: false
     },
     namespaces: {
@@ -294,7 +279,7 @@ it('ServiceAccountsDropdown handles onChange event when namespace changes', () =
   });
   render(
     <Provider store={storeBlueNamespace}>
-      <ServiceAccountsDropdown {...props} onChange={onChange} />
+      <PipelinesDropdown {...props} onChange={onChange} />
     </Provider>,
     { container }
   );

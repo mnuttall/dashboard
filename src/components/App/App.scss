@@ -25,12 +25,12 @@ main {
   padding: 2em 5%;
 }
 
-.bx--dropdown.bx--list-box {
-  margin: 0 1em 1.5em 1.5em;
-  border: none;
-  margin-bottom: 1.5em;
-  width: auto;
-}
+// .bx--dropdown.bx--list-box {
+//   margin: 0 1em 1.5em 1.5em;
+//   border: none;
+//   margin-bottom: 1.5em;
+//   width: auto;
+// }
 
 .bx--header ~ {
   nav.bx--side-nav {
@@ -64,9 +64,22 @@ main {
     .bx--side-nav__link-text {
       color: $text-01;
     }
+
+    .bx--dropdown.bx--list-box {
+      margin: 0 1em 1.5em 1.5em;
+      border: none;
+      margin-bottom: 1.5em;
+      width: auto;
+    }
   }
 
   .bx--content {
     margin-top: 7rem;
+    min-height: calc(100vh - 7rem);
   }
+
+  // .bx--modal--content {
+  //   height: calc(100vh - 7rem);
+  //   overflow: hidden;
+  // }
 }
