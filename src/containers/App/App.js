@@ -38,6 +38,7 @@ import {
   Secrets,
   Tasks,
   TaskRuns,
+  CreatePipelineRun,
   NamespacesDropdown
 } from '..';
 
@@ -90,6 +91,7 @@ export /* istanbul ignore next */ class App extends Component {
                 </SideNavLink>
               </SideNavMenu>
               <NamespacesDropdown
+                id="namespaces-dropdown"
                 titleText="Namespace"
                 selectedItem={{ text: namespace }}
                 onChange={event => {
@@ -139,6 +141,12 @@ export /* istanbul ignore next */ class App extends Component {
               <Route
                 path="/pipelines/:pipelineName/runs/:pipelineRunName"
                 component={PipelineRun}
+              />
+              <Route path="/create-pipelinerun" component={CreatePipelineRun} />
+              <Route
+                path="/pipelines/:pipelineName/create-pipelinerun"
+                exact
+                component={CreatePipelineRun}
               />
               <Route path="/extensions" exact component={Extensions} />
               {extensions.map(({ displayName, name, source }) => (
