@@ -35,6 +35,7 @@ import {
   PipelineRun,
   PipelineRuns,
   Pipelines,
+  Secrets,
   Tasks,
   TaskRuns,
   CustomResourceDefinition,
@@ -83,6 +84,9 @@ export /* istanbul ignore next */ class App extends Component {
                 >
                   PipelineRuns
                 </SideNavLink>
+                <SideNavLink element={NavLink} icon={<span />} to="/secrets">
+                  Secrets
+                </SideNavLink>
                 <SideNavLink element={NavLink} icon={<span />} to="/tasks">
                   Tasks
                 </SideNavLink>
@@ -123,6 +127,7 @@ export /* istanbul ignore next */ class App extends Component {
           <Content>
             <Switch>
               <Route path="/pipelines" exact component={Pipelines} />
+              <Route path="/secrets" exact component={Secrets} />
               <Route path="/tasks" exact component={Tasks} />
               <Route path="/pipelineruns" component={PipelineRuns} />
               <Route

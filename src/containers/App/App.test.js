@@ -26,7 +26,8 @@ it('App renders successfully without extensions', () => {
     extensions: { byName: {} },
     namespaces: { byName: {} },
     pipelines: { byNamespace: {} },
-    serviceAccounts: { byNamespace: {} }
+    serviceAccounts: { byNamespace: {} },
+    secrets: { byNamespace: {} }
   });
   const { queryByText } = render(
     <Provider store={store}>
@@ -49,7 +50,8 @@ it('App renders successfully with extensions', () => {
     extensions: { byName: {} },
     namespaces: { byName: {} },
     pipelines: { byNamespace: {} },
-    serviceAccounts: { byNamespace: {} }
+    serviceAccounts: { byNamespace: {} },
+    secrets: { byNamespace: {} }
   });
   const { queryByText } = render(
     <Provider store={store}>
