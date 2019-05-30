@@ -13,7 +13,7 @@ limitations under the License.
 
 import React, { Component } from 'react';
 import Add from '@carbon/icons-react/lib/add--alt/24';
-import Close from '@carbon/icons-react/lib/close--outline/16';
+import Close from '@carbon/icons-react/lib/misuse/24';
 import { connect } from 'react-redux';
 import { InlineNotification } from 'carbon-components-react';
 import Modal from '../SecretsModal';
