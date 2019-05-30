@@ -11,45 +11,33 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+// @import '~carbon-components/scss/globals/scss/styles';
 @import '~carbon-components/scss/globals/scss/vars';
+// @import '../../scss/vars';
 
-.import-resources {
+.create-pipelinerun {
+  .bx--modal-header,
+  .bx--modal-content,
   .bx--text-input__field-wrapper {
     width: 100%;
   }
 
-  .bx--btn {
-    margin-left: 2.8rem;
+  .bx--modal-content,
+  .bx--modal-header {
+    padding-right: 1rem;
   }
 
+  .bx--modal-content {
+    margin-bottom: $carbon--spacing-07
+  }
+
+  .bx--dropdown__wrapper,
   .bx--form-item {
-    margin: 2.8rem;
+    margin-bottom: $carbon--spacing-06;
   }
 
-  .bx--text-input__field-wrapper {
-    width: 50%;
-  }
-
-  .ImportHeader {
-    margin-left: 2.5rem;
-    padding-top: 2rem;
-    font-size: 1.5rem;
-  }
-}
-
-.outer {
-  background-color: white;
-  min-height: 46rem;
-  .bx--dropdown.bx--list-box {
-    margin: 0rem;
-    margin-bottom: 2.8rem;
-    width: 30%;
-    border-bottom: 1px solid $ui-04;
-  }
-  .bx--toast-notification {
-    margin: 2.8rem;
-  }
-  .bx--dropdown__wrapper {
-    margin-left: 2.8rem;
+  .bx--list-box__menu,
+  .bx--list-box {
+    background-color: #ffffff;
   }
 }

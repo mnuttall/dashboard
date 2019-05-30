@@ -21,8 +21,10 @@ import {
   StructuredListHead,
   StructuredListRow,
   StructuredListSkeleton,
-  StructuredListWrapper
+  StructuredListWrapper,
+  Button
 } from 'carbon-components-react';
+import Add from '@carbon/icons-react/lib/add/16';
 
 import { getStatusIcon, getStatus } from '../../utils';
 import { fetchPipelineRuns } from '../../actions/pipelineRuns';
@@ -34,8 +36,19 @@ import {
   getSelectedNamespace,
   isFetchingPipelineRuns
 } from '../../reducers';
+import { CreatePipelineRun } from '..';
 
 export /* istanbul ignore next */ class PipelineRuns extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showCreatePipelineRunModal: false
+    };
+
+    this.toggleModal = this.toggleModal.bind(this);
+  }
+
   componentDidMount() {
     this.fetchPipelineRuns();
   }
@@ -51,6 +64,10 @@ export /* istanbul ignore next */ class PipelineRuns extends Component {
     }
   }
 
+  toggleModal = showCreatePipelineRunModal => {
+    this.setState({ showCreatePipelineRunModal });
+  };
+
   fetchPipelineRuns() {
     const { params } = this.props.match;
     const { pipelineName } = params;
@@ -63,6 +80,20 @@ export /* istanbul ignore next */ class PipelineRuns extends Component {
 
     return (
       <>
+        <Button
+          iconDescription="Button icon"
+          renderIcon={Add}
+          onClick={() => this.toggleModal(true)}
+          // style={{ float: 'right' }}
+        >
+          Create PipelineRun
+        </Button>
+        <CreatePipelineRun
+          open={this.state.showCreatePipelineRunModal}
+          onClose={() => this.toggleModal(false)}
+          onSuccess={() => this.toggleModal(false)}
+          pipelineName={pipelineName}
+        />
         {(() => {
           if (loading) {
             return <StructuredListSkeleton border />;
@@ -136,7 +167,9 @@ export /* istanbul ignore next */ class PipelineRuns extends Component {
                         data-status={status}
                       >
                         {getStatusIcon({ reason, status })}
-                        {pipelineRun.status.conditions[0].message}
+                        {pipelineRun.status.conditions
+                          ? pipelineRun.status.conditions[0].message
+                          : ''}
                       </StructuredListCell>
                       <StructuredListCell>
                         {lastTransitionTime}
@@ -162,7 +195,7 @@ function mapStateToProps(state, props) {
     namespace: getSelectedNamespace(state),
     pipelineRuns: pipelineName
       ? getPipelineRunsByPipelineName(state, {
-          name: props.match.params.pipelineName
+          name: pipelineName
         })
       : getPipelineRuns(state)
   };

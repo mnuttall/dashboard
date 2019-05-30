@@ -95,6 +95,7 @@ export /* istanbul ignore next */ class App extends Component {
                 </SideNavLink>
               </SideNavMenu>
               <NamespacesDropdown
+                id="namespaces-dropdown"
                 titleText="Namespace"
                 selectedItem={{ text: namespace }}
                 onChange={event => {

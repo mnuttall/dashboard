@@ -84,34 +84,35 @@ export class ImportResources extends Component {
     });
 
     const promise = createPipelineRun(payload, namespace);
-    promise.then(headers => {
-      const logsURL = headers.get('Content-Location');
-      const pipelineRunName = logsURL.substring(logsURL.lastIndexOf('/') + 1);
-      const finalURL = '#/pipelines/pipeline0/runs/'.concat(pipelineRunName);
-      this.setState({
-        logsURL: finalURL,
-        submitSuccess: true,
-        invalidInput: false
+    promise
+      .then(headers => {
+        const logsURL = headers.get('Content-Location');
+        const pipelineRunName = logsURL.substring(logsURL.lastIndexOf('/') + 1);
+        const finalURL = '#/pipelines/pipeline0/runs/'.concat(pipelineRunName);
+        this.setState({
+          logsURL: finalURL,
+          submitSuccess: true,
+          invalidInput: false
+        });
+      })
+      .catch(error => {
+        const statusCode = error.response.status;
+        switch (statusCode) {
+          case 500:
+            this.setState({
+              submitSuccess: false,
+              invalidInput: true
+            });
+            break;
+          default:
+        }
       });
-    });
-    promise.catch(error => {
-      const statusCode = error.response.status;
-      switch (statusCode) {
-        case 500:
-          this.setState({
-            submitSuccess: false,
-            invalidInput: true
-          });
-          break;
-        default:
-      }
-    });
     event.preventDefault();
   };
 
   render() {
     return (
-      <div className="outer">
+      <div className="outer import-resources">
         <h1 className="ImportHeader">
           Import Tekton resources from repository
         </h1>
