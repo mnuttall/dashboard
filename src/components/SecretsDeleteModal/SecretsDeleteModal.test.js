@@ -19,14 +19,28 @@ it('SecretsDeleteModal renders with passed secret id', () => {
   const props = {
     open: true,
     id: 'dummySecret',
-    handleClick: function(){},
-    handleDelete: function(){}
+    handleClick() {},
+    handleDelete() {}
   };
-  const { queryByText } = render(
-      <SecretsDeleteModal {...props} />
-  );
+  const { queryByText } = render(<SecretsDeleteModal {...props} />);
   expect(queryByText('dummySecret')).toBeTruthy();
   expect(queryByText('Cancel')).toBeTruthy();
   expect(queryByText('Delete')).toBeTruthy();
   expect(queryByText('Delete Secret')).toBeTruthy();
+});
+
+it('Test SecretsDeleteModal click events', () => {
+  const handleClick = jest.fn();
+  const handleDelete = jest.fn();
+  const props = {
+    open: true,
+    id: 'dummySecret',
+    handleClick: handleClick,
+    handleDelete: handleDelete
+  };
+  const { queryByText } = render(<SecretsDeleteModal {...props} />);
+  fireEvent.click(queryByText('Cancel'));
+  fireEvent.click(queryByText('Delete'));
+  expect(handleDelete).toHaveBeenCalledTimes(1);
+  expect(handleClick).toHaveBeenCalledTimes(1);
 });

@@ -88,7 +88,6 @@ export /* istanbul ignore next */ class Secrets extends Component {
       return {
         id: secret.uid,
         secret: secret.name,
-        type: secret.type,
         annotations,
         add: <Close />,
         classText: 'cellText',
@@ -103,7 +102,6 @@ export /* istanbul ignore next */ class Secrets extends Component {
         {
           id: 'empty',
           secret: '-',
-          type: '-',
           annotations: '-',
           add: '-',
           classText: 'cellTextNone',
@@ -119,7 +117,6 @@ export /* istanbul ignore next */ class Secrets extends Component {
         {
           id: 'loading',
           secret: <Spinner />,
-          type: <Spinner />,
           annotations: <Spinner />,
           add: <Spinner />,
           classText: 'cellTextNone',
@@ -132,7 +129,6 @@ export /* istanbul ignore next */ class Secrets extends Component {
 
     const initialHeaders = [
       { key: 'secret', header: 'Secret' },
-      { key: 'type', header: 'Type' },
       { key: 'annotations', header: 'Annotations' },
       { key: 'add', header: <Add /> }
     ];

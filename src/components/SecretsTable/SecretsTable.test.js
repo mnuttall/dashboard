@@ -21,27 +21,21 @@ it('SecretsTable renders with no secrets', () => {
       {
         id: 'empty',
         secret: '-',
-        type: '-',
         annotations: '-',
         add: '-'
       }
     ],
     initialHeaders: [
       { key: 'secret', header: 'Secret' },
-      { key: 'type', header: 'Type' },
       { key: 'annotations', header: 'Annotations' },
       { key: 'add', header: 'Add' }
     ],
-    handleNew: function() {},
-    handleDelete: function() {},
-    loading: false,
-    secretsLength: 0
+    handleNew() {}
   };
   const { getAllByText, queryByText } = render(<SecretsTable {...props} />);
   expect(queryByText(/Secret/i)).toBeTruthy();
-  expect(queryByText(/Type/i)).toBeTruthy();
   expect(queryByText(/Annotations/i)).toBeTruthy();
-  expect(getAllByText('-').length === 4).toBeTruthy();
+  expect(getAllByText('-').length).toEqual(3);
 });
 
 it('SecretsTable renders with one secret', () => {
@@ -50,25 +44,19 @@ it('SecretsTable renders with one secret', () => {
       {
         id: '0',
         secret: 'dummySecret',
-        type: 'userpass',
         annotations: 'tekton.dev/git-0: https://github.ibm.com',
-        add: 'add'
+        add: 'delete'
       }
     ],
     initialHeaders: [
       { key: 'secret', header: 'Secret' },
-      { key: 'type', header: 'Type' },
       { key: 'annotations', header: 'Annotations' },
       { key: 'add', header: 'Add' }
     ],
-    handleNew: function() {},
-    handleDelete: function() {},
-    loading: false,
-    secretsLength: 1
+    handleNew: () {}
   };
   const { queryByText } = render(<SecretsTable {...props} />);
   expect(queryByText(/dummySecret/i)).toBeTruthy();
-  expect(queryByText(/userpass/i)).toBeTruthy();
   expect(
     queryByText(/tekton.dev\/git-0: https:\/\/github.ibm.com/i)
   ).toBeTruthy();
@@ -80,22 +68,40 @@ it('SecretsTable renders in loading state', () => {
       {
         id: 'loading',
         secret: 'loading',
-        type: 'loading',
         annotations: 'loading',
         add: 'loading'
       }
     ],
     initialHeaders: [
       { key: 'secret', header: 'Secret' },
-      { key: 'type', header: 'Type' },
       { key: 'annotations', header: 'Annotations' },
       { key: 'add', header: 'Add' }
     ],
-    handleNew: function() {},
-    handleDelete: function() {},
-    loading: true,
-    secretsLength: 0
+    handleNew() {}
   };
   const { getAllByText } = render(<SecretsTable {...props} />);
-  expect(getAllByText('loading').length === 4).toBeTruthy();
+  expect(getAllByText('loading').length).toEqual(3);
+});
+
+it('SecretsTable delete click handler', () => {
+  const handleDelete = jest.fn();
+  const props = {
+    initialRows: [
+      {
+        id: '0',
+        secret: 'dummySecret',
+        annotations: 'tekton.dev/git-0: https://github.ibm.com',
+        add: 'deleteIcon',
+        handler: handleDelete
+      }
+    ],
+    initialHeaders: [
+      { key: 'secret', header: 'Secret' },
+      { key: 'annotations', header: 'Annotations' },
+      { key: 'add', header: 'Add' }
+    ]
+  };
+  const { queryByText } = render(<SecretsTable {...props} />);
+  fireEvent.click(queryByText('deleteIcon'));
+  expect(handleDelete).toHaveBeenCalledTimes(1);
 });
