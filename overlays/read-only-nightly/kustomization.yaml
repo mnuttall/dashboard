@@ -1,0 +1,6 @@
+bases:
+- ../../base
+images:
+- name: dashboardImage
+  newName: gcr.io/tekton-nightly/dashboard
+  newTag: latest

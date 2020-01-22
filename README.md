@@ -43,19 +43,14 @@ You are now ready to use the Tekton Dashboard, optionally with the Tekton Webhoo
 
 ### Nightly builds
 
-The Tekton Dashboard has a hosted image of the latest builds located at `gcr.io/tekton-nightly/dashboard:latest`
-To install the Dashboard using this image:
-
-```bash
-kubectl apply -f config/release/gcr-tekton-dashboard.yaml
+The Tekton Dashboard has a hosted image of the latest builds located at `gcr.io/tekton-nightly/dashboard:latest`. Nightly builds come in four flavours: 
+(plain kube or Openshift) * (read-only or read-write):
+```shell
+kustomize build overlays/latest | ko apply -f -               # Plain Kube, read-write
+kustomize build overlays/latest-locked-down | ko apply -f -   # Plain Kube, read-only
+kustomize build overlays/latest-openshift --load-restrictor=LoadRestrictionsNone | ko apply -f -              # OpenShift read-write
+kustomize build overlays/latest-openshift-locked-down --load-restrictor=LoadRestrictionsNone | ko apply -f -  # OpenShift read-only
 ```
-
-Alternatively, the dashboard can be installed through the same GitHub release asset:
-
-```bash
-curl -L https://github.com/tektoncd/dashboard/releases/download/v0/gcr-tekton-dashboard.yaml | kubectl apply -f -
-```
-
 Development installation of the Dashboard uses `ko`:
 
 ```bash

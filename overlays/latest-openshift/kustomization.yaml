@@ -1,0 +1,9 @@
+resources:
+- ../full-fat
+patches:
+- ../openshift-patches/serviceaccount.yaml
+- ../openshift-patches/oauth-proxy-in-deployment.yaml
+images:
+- name: dashboardImage
+  newName: gcr.io/tekton-nightly/dashboard
+  newTag: latest

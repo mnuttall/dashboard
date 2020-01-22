@@ -1,0 +1,5 @@
+resources:
+- ../../base
+patches:
+- ../openshift-patches/serviceaccount.yaml
+- ../openshift-patches/oauth-proxy-in-deployment.yaml

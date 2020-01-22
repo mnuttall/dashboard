@@ -1,0 +1,5 @@
+resources:
+- ../full-fat
+patches:
+- ./serviceaccount.yaml
+- ./oauth-proxy-in-deployment.yaml
